@@ -15,6 +15,7 @@ public class MenuMain extends Menu {
 	void printMenu() {
 		System.out.println("\n" + "Please make a selection: " + "\n");
 		System.out.println("     1) Exercise 1: Strategy Pattern" + "\n");
+		System.out.println("     2) Exercise 2: Observer pattern" + "\n");
 		System.out.println("     0) Exit");
 	}
 
@@ -28,6 +29,9 @@ public class MenuMain extends Menu {
 			case 1:
 				swapMenu(MenusEnum.EX1_MENU);
 				break;
+			case 2:
+				swapMenu(MenusEnum.EX2_MENU);
+				break;
 			default:
 				System.out.println("Unexpected error occurred");
 				break;
@@ -36,6 +40,6 @@ public class MenuMain extends Menu {
 
 	@Override
 	boolean isChoiceValid(int choice) {
-		return choice == 0 || choice == 1;		
+		return choice >= 0 && choice <= 2;	
 	}
 }

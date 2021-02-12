@@ -7,6 +7,8 @@ public abstract class Menu {
 	private static Menu instance = null;
 	
 	private boolean exit = false;
+	private boolean menuVisibility = true;
+	
 	private MenusEnum swapMenu = null;
 	
 	public static Menu getInstance() {
@@ -19,16 +21,24 @@ public abstract class Menu {
 	abstract void performAction(int choice);
 	abstract boolean isChoiceValid(int choice);
 	
-	public void runMenu() {
+	public void runMenu() throws Exception {
 		printHeader();
 		while(!exit && swapMenu == null) {
-			printMenu();
-			int choice = getInput();
-			performAction(choice);
+				if (menuVisibility) printMenu();
+				int choice = getInput();
+				performAction(choice);
 		}
 		
 		if (swapMenu != null) {
 			swapMenuInstance(swapMenu);
+		}
+	}
+	
+	public void setMenuVisibility(boolean mv) {
+		menuVisibility = mv;
+		if (mv) {
+			printHeader();
+			printMenu();
 		}
 	}
 	
@@ -38,7 +48,7 @@ public abstract class Menu {
 		
 		while(!isChoiceValid(choice)) {
 			try {
-				System.out.println("\n\nEnter your choice: ");
+				if (menuVisibility) System.out.println("\n\nEnter your choice: ");
 				choice = Integer.parseInt(kb.nextLine());
 				if (!isChoiceValid(choice)) throw new Exception("\nInvalid selection. Please try again.");
 			}
@@ -57,16 +67,22 @@ public abstract class Menu {
 		swapMenu = menu;
 	}
 	
-	private void swapMenuInstance(MenusEnum menu) {
+	private void swapMenuInstance(MenusEnum menu) throws Exception {
 		switch(menu) {
-		case MAIN_MENU: 
-			instance = new MenuMain();
-			instance.runMenu();
-			break;
-		case EX1_MENU:
-			instance = new MenuEx1();
-			instance.runMenu();
-			break;
+			case MAIN_MENU: 
+				instance = new MenuMain();
+				instance.runMenu();
+				break;
+			case EX1_MENU:
+				instance = new MenuEx1();
+				instance.runMenu();
+				break;
+			case EX2_MENU:
+				instance = new MenuEx2();
+				instance.runMenu();
+				break;
+			default:
+				throw new Exception("This menu doesn't exist");
 		}
 	}
 	
